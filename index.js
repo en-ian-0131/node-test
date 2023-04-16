@@ -11,7 +11,7 @@ if(process.argv[2] && process.argv[2]==='production'){
 const express = require("express");
 const server = express();
 
-// server.set("view engine","ejs")
+server.set("view engine","ejs")
 
 
 server.get("/",(req,res)=>{
@@ -19,7 +19,7 @@ server.get("/",(req,res)=>{
     // res.render("main",{name: 'Ian'})
 })
 
-//根目錄要用express.static()
+
 server.use(express.static("public"))
 // server.use(express.static("node_modules/bootstrap/dist"))
 
