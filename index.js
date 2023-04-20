@@ -10,18 +10,53 @@ if(process.argv[2] && process.argv[2]==='production'){
 
 const express = require("express");
 const server = express();
+const multer = require('multer')
+const upload = require('./module/upload-img')
+// const upload = multer({dest: 'nodeUpload/'})
 
 server.set("view engine","ejs")
 
 
+server.use(express.urlencoded({extended:false}))
+server.use(express.json())
+
+
 server.get("/",(req,res)=>{
-    res.send("<h1>Hello world~</h1>");
-    // res.render("main",{name: 'Ian'})
+    // res.send("<h1>Hello world~</h1>");
+    res.render("main",{name: 'Ian'})
+})
+
+server.get("/sales-json",(req,res)=>{
+    const sales = require(__dirname + "/data/sales.json")
+    // res.json(sales)
+    res.render("sales-json",{sales})
+})
+
+
+// const urlEncoded = express.urlencoded({extended:false})
+server.post('/try-post',(req,res)=>{
+    res.send({
+        query:req.query,
+        body:req.body
+    });
+})
+
+server.get('/try-post-form',(req,res)=>{
+    // res.render('try-post-form',{account:'',password:''});
+    res.render('try-post-form');
+})
+server.post('/try-post-form',(req,res)=>{
+    // res.json(req.body);
+    res.render('try-post-form',req.body);
+})
+server.post('/try-upload',upload.single('avatar'),(req,res)=>{
+    res.json(req.file);
 })
 
 
 server.use(express.static("public"))
-// server.use(express.static("node_modules/bootstrap/dist"))
+server.use(express.static('node_modules/bootstrap/dist'))
+
 
 
 server.use((req,res)=>{

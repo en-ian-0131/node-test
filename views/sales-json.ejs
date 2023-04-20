@@ -1,0 +1,26 @@
+<%- include('parts/header-html') %> <%- include('parts/navbar') %>
+
+<div class="container">
+  <div class="row col-6">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">name</th>
+          <th scope="col">age</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i of sales){ %>
+        <tr>
+          <td><%= i.id %></td>
+          <td><%= i.name %></td>
+          <td><%= i.age %></td>
+        </tr>
+        <% }%>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('parts/script') %> <%- include('parts/footer-html') %>
