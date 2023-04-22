@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form name="form1" onsubmit="doupload(event)">
+      <input type="text" name="textForm" />
+      <br />
+      <input type="file" name="avatar" accept="image/*" />
+      <br />
+      <button type="submit">send</button>
+    </form>
+    <div id="imgContainer">
+      <!-- <img src="/imgs/12345.jpeg" style="width: 250px" /> -->
+    </div>
+    <script>
+      let imgData = [];
+      const imgCountainer = document.querySelector("#imgContainer");
+      async function doupload(event) {
+        event.preventDefault();
+        const fd = new FormData(document.form1);
+        const data = await fetch("/try-upload", {
+          method: "POST",
+          body: fd,
+        }).then((r) => r.json());
+        console.log(data.file.filename);
+        imgData = [data.file.filename];
+        render();
+      }
+      function render() {
+        imgCountainer.innerHTML = `<img src="/imgs/${imgData}" style="width: 250px" />`;
+      }
+    </script>
+  </body>
+</html>

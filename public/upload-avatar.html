@@ -57,12 +57,21 @@
       function render() {
         container.innerHTML = imgData
           .map((el) => {
-            return `<div id="imgRender">
-        <img src="/imgs/${el}" alt="" />
-        <i class="fa-solid fa-delete-left"></i>
-        </div>`;
+            return `<div id="imgRender" data-id=${el}>
+                        <img src="/imgs/${el}" alt="" />
+                        <i class="fa-solid fa-delete-left" onclick="deleteItem(event)"></i>
+                    </div>`;
           })
           .join("");
+      }
+      function deleteItem(event) {
+        const push = event.currentTarget
+          .closest("#imgRender")
+          .getAttribute("data-id");
+        imgData = imgData.filter((el) => {
+          return el !== push;
+        });
+        render();
       }
     </script>
   </body>
