@@ -50,7 +50,10 @@ server.post('/try-post-form',(req,res)=>{
     res.render('try-post-form',req.body);
 })
 server.post('/try-upload',upload.single('avatar'),(req,res)=>{
-    res.json(req.file);
+    res.json({
+        body:req.body,
+        file:req.file,
+    });
 })
 
 
