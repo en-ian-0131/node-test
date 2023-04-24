@@ -13,23 +13,37 @@ const server = express();
 const multer = require('multer')
 const upload = require('./module/upload-img')
 // const upload = multer({dest: 'nodeUpload/'})
+const session = require('express-session')
 
 server.set("view engine","ejs")
 
 
 server.use(express.urlencoded({extended:false}))
 server.use(express.json())
+server.use((req,res,next)=>{
+    res.locals.title = "Ian的網站"
+    next();
+})
+server.use(session({
+    saveUninitialized:false,
+    resave:false,
+    secret:'nlrjviljfljnkjmsdo623gb3g3n2t32b',
+    cookie:{
+        maxAge:120_000
+    }
+}))
 
 
 server.get("/",(req,res)=>{
     // res.send("<h1>Hello world~</h1>");
+    res.locals.title = '首頁-' + res.locals.title;
     res.render("main",{name: 'Ian'})
 })
 
 server.get("/sales-json",(req,res)=>{
     const sales = require(__dirname + "/data/sales.json")
     // res.json(sales)
-    res.render("sales-json",{sales})
+    res.render("sales-json",{sales,title:'業務員資料'})
 })
 
 
@@ -40,6 +54,15 @@ server.post('/try-post',(req,res)=>{
         body:req.body
     });
 })
+
+
+server.use('/admin2',require('./routers/route'))
+
+
+server.get('/admin2/:account/:password',(req,res)=>{
+    res.send(req.params);
+})
+
 
 server.get('/try-post-form',(req,res)=>{
     // res.render('try-post-form',{account:'',password:''});
@@ -55,6 +78,14 @@ server.post('/try-upload',upload.single('avatar'),(req,res)=>{
         file:req.file,
     });
 })
+server.get('/try-sess',(req,res)=>{
+    req.session.mySeesion = req.session.mySeesion || 0;
+    req.session.mySeesion++;
+    res.json(req.session);
+})
+
+
+
 
 
 server.use(express.static("public"))
